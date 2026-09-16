@@ -17,3 +17,4 @@ services:
         sync: false
       - key: DB_NAME
         value: foodcart
+
