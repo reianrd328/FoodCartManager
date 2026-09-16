@@ -354,36 +354,22 @@ async function loadRecentRentals() {
 
 
         container.innerHTML = result.data
+            .slice(0, 6)
             .map(rental => `
-
                 <div class="rental-row">
-
-                    <div>
-                        <strong>
-                            ${rental.rental_code || "Rental"}
-                        </strong>
-
-                        <small>
-                            ${rental.vendor_name || "Unknown vendor"}
-                        </small>
+                    <div class="rental-row-main">
+                        <strong>${rental.rental_code || "Rental"}</strong>
+                        <small>${rental.vendor_name || "Unknown vendor"}</small>
                     </div>
-
                     <div>
-                        <span>
+                        <span class="status-badge ${String(rental.status || 'ACTIVE').toLowerCase()}">
                             ${rental.status || "ACTIVE"}
                         </span>
                     </div>
-
-                    <div>
-                        <strong>
-                            \u20B1${Number(
-                                rental.rent_amount || 0
-                            ).toFixed(2)}
-                        </strong>
+                    <div class="rental-row-amount">
+                        <strong>${formatCurrency(rental.rent_amount)}</strong>
                     </div>
-
                 </div>
-
             `)
             .join("");
 

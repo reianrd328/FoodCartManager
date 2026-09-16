@@ -2883,4 +2883,54 @@ button {
     }
 }
 
+/* ==========================================
+   DASHBOARD RECENT RENTALS
+========================================== */
+
+.recent-rentals-list {
+    padding: 8px 22px 18px;
+}
+
+.rental-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid #f3e6ec;
+    gap: 16px;
+}
+
+.rental-row:last-child {
+    border-bottom: none;
+}
+
+.rental-row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+}
+
+.rental-row-main strong {
+    color: #351827;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rental-row-main small {
+    color: #8f7180;
+    font-size: 12px;
+}
+
+.rental-row-amount strong {
+    color: #c90061;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.rental-row .status-badge {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
 

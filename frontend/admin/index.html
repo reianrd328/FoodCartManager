@@ -280,64 +280,25 @@
                     <div class="panel">
 
                         <div class="panel-header">
-
-                            <section class="recent-rentals">
-
-    <div class="section-header">
-        <div>
-            <h3>Recent Rentals</h3>
-            <p>Your latest rental activity</p>
-        </div>
-
-        <a href="#rentals">View all &#8594;</a>
-    </div>
-
-    <div data-recent-rentals>
-
-        <div class="empty-state">
-            <div class="empty-icon">&#9825;</div>
-
-            <h4>No rentals yet</h4>
-
-            <p>
-                Your rental transactions will appear here.
-            </p>
-
-            <button
-                class="primary-btn"
-                onclick="window.location.href='#rentals'">
-                Create First Rental
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-                            <button class="text-button">
-                                View all &#8594;
-                            </button>
-
-                        </div>
-
-                        <div class="empty-state">
-
-                            <div class="empty-icon">
-                                &#9825;
+                            <div>
+                                <h3>Recent Rentals</h3>
+                                <p>Your latest rental activity</p>
                             </div>
 
-                            <h4>No rentals yet</h4>
-
-                            <p>
-                                Your rental transactions will
-                                appear here.
-                            </p>
-
-                            <button class="primary-button">
-                                Create First Rental
+                            <button class="text-button" type="button" onclick="showPage('rentals')">
+                                View all &#8594;
                             </button>
+                        </div>
 
+                        <div data-recent-rentals class="recent-rentals-list">
+                            <div class="empty-state">
+                                <div class="empty-icon">&#9825;</div>
+                                <h4>No rentals yet</h4>
+                                <p>Your rental transactions will appear here.</p>
+                                <button class="primary-btn" type="button" onclick="showPage('rentals')">
+                                    Create First Rental
+                                </button>
+                            </div>
                         </div>
 
                     </div>
