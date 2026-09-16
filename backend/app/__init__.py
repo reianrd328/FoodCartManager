@@ -47,6 +47,10 @@ def create_app():
     def admin_page():
         return send_from_directory(admin_dir, "index.html")
 
+    @app.route("/admin/<path:filename>")
+    def admin_static(filename):
+        return send_from_directory(admin_dir, filename)
+
     @app.route("/login")
     @app.route("/login/")
     def login_page():
