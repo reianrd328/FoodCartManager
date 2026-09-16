@@ -301,11 +301,37 @@ button {
 }
 
 
+.logout-btn,
 .more-btn {
 
     background: transparent;
 
+    border: none;
+
     color: var(--muted);
+
+    cursor: pointer;
+
+    padding: 7px;
+
+    border-radius: 8px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: all .2s ease;
+}
+
+
+.logout-btn:hover,
+.more-btn:hover {
+
+    background: #ffe3ef;
+
+    color: var(--pink-6);
 }
 
 

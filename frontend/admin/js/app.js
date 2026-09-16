@@ -6,6 +6,66 @@
 const API_BASE = window.location.protocol.startsWith("http")
     ? window.location.origin
     : "http://127.0.0.1:5000";
+
+// ==========================================
+// SESSION CHECK & LOGOUT
+// ==========================================
+function checkAdminAuth() {
+    if (!window.location.protocol.startsWith("http")) {
+        return true;
+    }
+    const rawUser = localStorage.getItem("foodcart_user");
+    if (!rawUser) {
+        window.location.href = "/login/";
+        return false;
+    }
+    try {
+        const user = JSON.parse(rawUser);
+        if (user.role === "VENDOR") {
+            window.location.href = "/vendor/";
+            return false;
+        }
+        const nameEl = document.querySelector("#adminProfileName");
+        const roleEl = document.querySelector("#adminProfileRole");
+        const avatarEl = document.querySelector("#adminAvatar");
+        if (nameEl) nameEl.textContent = user.full_name || user.username || "Administrator";
+        if (roleEl) roleEl.textContent = (user.role === "ADMIN" ? "System Admin" : user.role) || "Staff";
+        if (avatarEl && (user.full_name || user.username)) {
+            avatarEl.textContent = (user.full_name || user.username).charAt(0).toUpperCase();
+        }
+    } catch (e) {
+        localStorage.removeItem("foodcart_user");
+        localStorage.removeItem("foodcart_token");
+        window.location.href = "/login/";
+        return false;
+    }
+    return true;
+}
+
+function logout() {
+    try {
+        const token = localStorage.getItem("foodcart_token");
+        if (token) {
+            fetch(`${API_BASE}/api/auth/logout`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` }
+            }).catch(() => {});
+        }
+    } catch (e) {}
+    localStorage.removeItem("foodcart_user");
+    localStorage.removeItem("foodcart_token");
+    window.location.href = "/login/";
+}
+
+window.logout = logout;
+window.checkAdminAuth = checkAdminAuth;
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", checkAdminAuth);
+} else {
+    checkAdminAuth();
+}
+
 /* ==========================================
    FOODCARTMANAGER NOTIFICATIONS
    ========================================== */

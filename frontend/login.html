@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - FoodCartManager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c90061;
+            --primary-hover: #a5004f;
+            --primary-light: #fff0f7;
+            --text-main: #331525;
+            --text-sub: #7a5a6b;
+            --border: #f0dbe6;
+            --bg: #fbf5f8;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            color: var(--text-main);
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-icon {
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, #df2a78, #c90061);
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 24px rgba(201, 0, 97, 0.22);
+            margin-bottom: 14px;
+        }
+
+        .brand-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-header p {
+            color: var(--text-sub);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 28px;
+            box-shadow: 0 16px 40px rgba(100, 20, 55, 0.06);
+        }
+
+        .login-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .login-card .subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #553444;
+        }
+
+        .form-group input {
+            height: 44px;
+            border: 1px solid #e7d2de;
+            border-radius: 10px;
+            padding: 0 14px;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #ffffff;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(201, 0, 97, 0.10);
+            background: #fffdfd;
+        }
+
+        .form-message {
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            display: none;
+        }
+
+        .form-message.error {
+            background: #feecef;
+            color: #c90038;
+            border: 1px solid #f8c1ce;
+        }
+
+        .form-message.success {
+            background: #e9f8ee;
+            color: #1a7f37;
+            border: 1px solid #bee7c8;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 46px;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 18px rgba(201, 0, 97, 0.20);
+        }
+
+        .login-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(201, 0, 97, 0.28);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* QUICK DEMO ACCOUNTS */
+        .demo-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed #edd8e3;
+        }
+
+        .demo-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #927584;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .demo-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .demo-btn {
+            background: var(--primary-light);
+            border: 1px solid #f6d1e3;
+            color: var(--primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.2s ease;
+            text-align: left;
+        }
+
+        .demo-btn:hover {
+            background: #fde4f1;
+            border-color: var(--primary);
+            transform: translateX(2px);
+        }
+
+        .demo-btn span.role-tag {
+            font-size: 10px;
+            background: #ffffff;
+            padding: 2px 7px;
+            border-radius: 999px;
+            border: 1px solid #f1d5e3;
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #987a8b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <div class="brand-header">
+            <div class="brand-icon">&#127828;</div>
+            <h1>FoodCartManager</h1>
+            <p>Property, vendor &amp; rental management</p>
+        </div>
+
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to your account</p>
+
+            <div id="loginMessage" class="form-message"></div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" required autocomplete="username" placeholder="e.g. admin or takoyaki">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required autocomplete="current-password" placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="login-btn" id="loginSubmitBtn">
+                    Sign In
+                </button>
+
+            </form>
+
+            <div class="demo-section">
+                <div class="demo-title">Quick Demo Login</div>
+                <div class="demo-chips">
+                    <button type="button" class="demo-btn" onclick="fillDemo('admin', 'admin123')">
+                        <span>&#128188; Admin Dashboard</span>
+                        <span class="role-tag">admin / admin123</span>
+                    </button>
+                    <button type="button" class="demo-btn" onclick="fillDemo('takoyaki', 'vendor123')">
+                        <span>&#127858; Takoyaki Haven (Vendor)</span>
+                        <span class="role-tag">takoyaki / vendor123</span>
+                    </button>
+                    <button type="button" class="demo-btn" onclick="fillDemo('manglarry', 'vendor123')">
+                        <span>&#127830; Mang Larry's Grill (Vendor)</span>
+                        <span class="role-tag">manglarry / vendor123</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            FoodCartManager &bull; Cloud Rental Management
+        </div>
+
+    </div>
+
+    <script>
+        const API_BASE = window.location.protocol.startsWith("http")
+            ? window.location.origin
+            : "http://127.0.0.1:5000";
+
+        function fillDemo(user, pass) {
+            document.querySelector("#username").value = user;
+            document.querySelector("#password").value = pass;
+            showMessage("Demo credentials filled. Click 'Sign In' or press Enter!", "success");
+        }
+
+        function showMessage(msg, type = "error") {
+            const el = document.querySelector("#loginMessage");
+            if (!el) return;
+            el.style.display = "block";
+            el.className = "form-message " + type;
+            el.textContent = msg;
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.querySelector("#loginSubmitBtn");
+            const username = document.querySelector("#username").value.trim();
+            const password = document.querySelector("#password").value.trim();
+
+            if (!username || !password) {
+                showMessage("Please enter both username and password.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Signing in...";
+
+            try {
+                const res = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || "Login failed.");
+                }
+
+                // Save session
+                localStorage.setItem("foodcart_token", data.token);
+                localStorage.setItem("foodcart_user", JSON.stringify(data.user));
+
+                showMessage("Login successful! Redirecting...", "success");
+
+                setTimeout(() => {
+                    if (data.user.role === "ADMIN" || data.user.role === "STAFF") {
+                        window.location.href = "/admin/";
+                    } else if (data.user.role === "VENDOR") {
+                        window.location.href = "/vendor/";
+                    } else {
+                        window.location.href = "/admin/";
+                    }
+                }, 600);
+
+            } catch (err) {
+                console.error("Login error:", err);
+                showMessage(err.message || "Invalid credentials.");
+                btn.disabled = false;
+                btn.textContent = "Sign In";
+            }
+        }
+    </script>
+</body>
+</html>
