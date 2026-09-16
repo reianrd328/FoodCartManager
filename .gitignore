@@ -1,0 +1,32 @@
+# Environments and secrets (NEVER commit secrets!)
+.env
+*.env
+backend/.env
+venv/
+backend/venv/
+env/
+ENV/
+
+# Python byte-code and cache
+__pycache__/
+*/__pycache__/
+backend/app/**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary and backup files
+*.before-*
+*.bak
+*.backup
+*.backup*
+*.sidebar-backup
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and editors
+.vscode/
+.idea/

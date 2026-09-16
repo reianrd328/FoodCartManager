@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodCart Manager &#8212; Admin</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">
+                FC
+            </div>
+
+            <div>
+                <h1>FoodCart</h1>
+                <span>MANAGER</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+
+    <p class="section-title">MAIN</p>
+
+    <button class="nav-item active" data-page="dashboard" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span>
+        <span>Dashboard</span>
+    </button>
+
+    <button class="nav-item" data-page="rentals" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5M16 4v5"/></svg></span>
+        <span>Rentals</span>
+    </button>
+
+    <button class="nav-item" data-page="food-carts" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="7" cy="6" r="1"/><circle cx="7" cy="12" r="1"/><circle cx="7" cy="18" r="1"/></svg></span>
+        <span>Food Carts</span>
+    </button>
+
+    <button class="nav-item" data-page="vendors" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 21c.8-4 3-6 7-6s6.2 2 7 6"/><path d="M8 21h8"/></svg></span>
+        <span>Vendors</span>
+    </button>
+
+    <button class="nav-item" data-page="spaces" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v6M16 4v6M8 15h8M12 12v6"/></svg></span>
+        <span>Rental Spaces</span>
+    </button>
+
+</div>
+
+
+<div class="sidebar-section">
+
+    <p class="section-title">FINANCE</p>
+
+    <button class="nav-item" data-page="payments" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h7a4 4 0 0 1 0 8H7"/><path d="M7 4v16M4 9h10"/></svg></span>
+        <span>Payments</span>
+    </button>
+
+    <button class="nav-item" data-page="receipts" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span>
+        <span>Receipts</span>
+    </button>
+
+    <button class="nav-item" data-page="expenses" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></span>
+        <span>Expenses</span>
+    </button>
+
+</div>
+
+
+<div class="sidebar-section">
+
+    <p class="section-title">SYSTEM</p>
+
+    <button class="nav-item" data-page="settings" type="button">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V20h-2.5v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8.1 15a1.7 1.7 0 0 0-1.5-1H6v-2.5h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L9 6.7l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V5h2.5v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1V14h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+        <span>Settings</span>
+    </button>
+
+</div>
+<div class="sidebar-bottom">
+
+            <div class="admin-profile">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <div class="profile-info">
+                    <strong>Administrator</strong>
+                    <span>System Admin</span>
+                </div>
+
+                <button class="more-btn">&#8226;&#8226;&#8226;</button>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <p class="welcome">Welcome back &#128075;</p>
+                <h2 id="pageTitle">Dashboard</h2>
+            </div>
+
+            <div class="top-actions">
+
+                <button class="icon-button" title="Notifications">
+                    &#9825;
+                    <span class="notification-dot"></span>
+                </button>
+
+                <button class="add-button" id="quickAdd">
+                    <span>+</span>
+                    New Rental
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content" id="pageContent">
+
+            <!-- DASHBOARD -->
+
+            <div class="dashboard-page">
+
+                <div class="hero-card">
+
+                    <div class="hero-content">
+
+                        <span class="hero-label">
+                            FOODCART MANAGEMENT
+                        </span>
+
+                        <h3>
+                            Your property.<br>
+                            Your food community.
+                        </h3>
+
+                        <p>
+                            Manage food cart rentals, vendors,
+                            payments and receipts from one place.
+                        </p>
+
+                        <button class="hero-button">
+                            View Rentals &#8594;
+                        </button>
+
+                    </div>
+
+                    <div class="hero-decoration">
+                        <div class="circle circle-one"></div>
+                        <div class="circle circle-two"></div>
+                        <div class="circle circle-three"></div>
+
+                        <div class="cart-symbol">
+                            &#128722;
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
+                <!-- STAT CARDS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-icon pink">&#8369;</span>
+                            <span class="trend positive">+12.5%</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <p>Total Revenue</p>
+                            <h3 data-dashboard="total-revenue">&#8369;0.00</h3>
+                        </div>
+
+                        <span class="stat-description">
+                            This month
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-icon purple">&#9633;</span>
+                            <span class="trend positive">Active</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <p>Active Rentals</p>
+                            <h3 data-dashboard="active-rentals">0</h3>
+                        </div>
+
+                        <span class="stat-description">
+                            Currently rented
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-icon rose">&#9823;</span>
+                            <span class="trend">Vendors</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <p>Food Vendors</p>
+                            <h3 data-dashboard="food-vendors">0</h3>
+                        </div>
+
+                        <span class="stat-description">
+                            Registered vendors
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-icon soft">&#8862;</span>
+                            <span class="trend">Available</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <p>Available Spaces</p>
+                            <h3 data-dashboard="available-spaces">0</h3>
+                        </div>
+
+                        <span class="stat-description">
+                            Ready for rental
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOWER GRID -->
+
+                <div class="dashboard-grid">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <section class="recent-rentals">
+
+    <div class="section-header">
+        <div>
+            <h3>Recent Rentals</h3>
+            <p>Your latest rental activity</p>
+        </div>
+
+        <a href="#rentals">View all &#8594;</a>
+    </div>
+
+    <div data-recent-rentals>
+
+        <div class="empty-state">
+            <div class="empty-icon">&#9825;</div>
+
+            <h4>No rentals yet</h4>
+
+            <p>
+                Your rental transactions will appear here.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="window.location.href='#rentals'">
+                Create First Rental
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+                            <button class="text-button">
+                                View all &#8594;
+                            </button>
+
+                        </div>
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                &#9825;
+                            </div>
+
+                            <h4>No rentals yet</h4>
+
+                            <p>
+                                Your rental transactions will
+                                appear here.
+                            </p>
+
+                            <button class="primary-button">
+                                Create First Rental
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <h3>Quick Overview</h3>
+                                <p>Property status</p>
+                            </div>
+
+                        </div>
+
+                        <div class="overview-list">
+
+                            <div class="overview-item">
+                                <div class="overview-icon">&#9633;</div>
+                                <div>
+                                    <strong>Food Carts</strong>
+                                    <span>Manage your carts</span>
+                                </div>
+                                <b>0</b>
+                            </div>
+
+                            <div class="overview-item">
+                                <div class="overview-icon">&#8862;</div>
+                                <div>
+                                    <strong>Rental Spaces</strong>
+                                    <span>Your available locations</span>
+                                </div>
+                                <b>0</b>
+                            </div>
+
+                            <div class="overview-item">
+                                <div class="overview-icon">&#9823;</div>
+                                <div>
+                                    <strong>Vendors</strong>
+                                    <span>Registered tenants</span>
+                                </div>
+                                <b>0</b>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+<!-- ==========================================
+     VENDORS PAGE
+========================================== -->
+
+<!-- ==========================================
+     FOOD CARTS PAGE
+========================================== -->
+
+
+<!-- ==========================================
+     RENTALS PAGE
+========================================== -->
+
+<div class="payments-page" style="display: none;">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Payments</h2>
+            <p>Manage rental payments and payment transactions</p>
+        </div>
+
+        <button class="primary-btn" id="newPaymentBtn" type="button">
+            + Record Payment
+        </button>
+
+    </div>
+
+
+    <!-- PAYMENT SUMMARY -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <span class="stat-icon pink">&#8369;</span>
+                <span class="trend positive">Collected</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Total Payments</p>
+                <h3 id="paymentsTotalAmount">&#8369;0.00</h3>
+            </div>
+
+            <span class="stat-description">
+                All recorded payments
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <span class="stat-icon purple">&#8369;</span>
+                <span class="trend">This Month</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Monthly Collection</p>
+                <h3 id="paymentsMonthAmount">&#8369;0.00</h3>
+            </div>
+
+            <span class="stat-description">
+                Payments received this month
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <span class="stat-icon rose">&#8369;</span>
+                <span class="trend">Cash</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Cash Payments</p>
+                <h3 id="paymentsCashAmount">&#8369;0.00</h3>
+            </div>
+
+            <span class="stat-description">
+                Cash transactions
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+                <span class="stat-icon soft">&#8369;</span>
+                <span class="trend">Transactions</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Payment Count</p>
+                <h3 id="paymentsCount">0</h3>
+            </div>
+
+            <span class="stat-description">
+                Recorded transactions
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH / FILTER -->
+
+    <div class="vendor-toolbar">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="paymentSearch"
+                placeholder="Search payments..."
+            >
+
+        </div>
+
+        <select id="paymentMethodFilter">
+
+            <option value="ALL">All Methods</option>
+            <option value="CASH">Cash</option>
+            <option value="GCASH">GCash</option>
+            <option value="BANK">Bank Transfer</option>
+            <option value="CARD">Card</option>
+            <option value="OTHER">Other</option>
+
+        </select>
+
+    </div>
+
+
+    <!-- PAYMENTS TABLE -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h3>Payment Transactions</h3>
+
+                <p>
+                    Rental payments received from food vendors
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="vendor-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Receipt #</th>
+                        <th>Vendor</th>
+                        <th>Rental</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Payment Date</th>
+                        <th>Reference</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="paymentsTableBody">
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            <div class="empty-state">
+
+                                <h4>
+                                    Loading payments...
+                                </h4>
+
+                                <p>
+                                    Please wait.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="rentals-page" style="display: none;">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Rentals</h2>
+            <p>Manage food cart rental transactions</p>
+        </div>
+
+        <button class="primary-btn" id="newRentalBtn" type="button">
+            + New Rental
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH / FILTER -->
+
+    <div class="vendor-toolbar">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="rentalSearch"
+                placeholder="Search rentals..."
+            >
+
+        </div>
+
+        <select id="rentalStatusFilter">
+
+            <option value="ALL">
+                All Status
+            </option>
+
+            <option value="ACTIVE">
+                Active
+            </option>
+
+            <option value="COMPLETED">
+                Completed
+            </option>
+
+            <option value="CANCELLED">
+                Cancelled
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- RENTALS TABLE -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h3>Rental Transactions</h3>
+
+                <p>
+                    Current and previous food cart rentals
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="vendor-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Rental Code</th>
+                        <th>Vendor</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Billing</th>
+                        <th>Rent Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="rentalsTableBody">
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            <div class="empty-state">
+
+                                <h4>
+                                    Loading rentals...
+                                </h4>
+
+                                <p>
+                                    Please wait.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="food-carts-page" style="display: none;">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Food Carts</h2>
+            <p>Manage food carts registered in FoodCartManager</p>
+        </div>
+
+        <button class="primary-btn" id="addFoodCartBtn" type="button">
+            + Add Food Cart
+        </button>
+
+    </div>
+
+    <div class="vendor-toolbar">
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="foodCartSearch"
+                placeholder="Search food carts..."
+            >
+        </div>
+
+        <select id="foodCartStatusFilter">
+            <option value="ALL">All Status</option>
+            <option value="AVAILABLE">Available</option>
+            <option value="RENTED">Rented</option>
+            <option value="MAINTENANCE">Maintenance</option>
+            <option value="INACTIVE">Inactive</option>
+        </select>
+
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h3>Registered Food Carts</h3>
+                <p>Food carts available for rental management</p>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="vendor-table">
+
+                <thead>
+                    <tr>
+                        <th>Cart Code</th>
+                        <th>Cart Name</th>
+                        <th>Ownership</th>
+                        <th>Vendor</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="foodCartsTableBody">
+
+                    <tr>
+                        <td colspan="6">
+
+                            <div class="empty-state">
+
+                                <h4>
+                                    Loading food carts...
+                                </h4>
+
+                                <p>
+                                    Please wait.
+                                </p>
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="vendors-page" style="display: none;">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Vendors</h2>
+            <p>Manage your food cart vendors</p>
+        </div>
+
+        <button class="primary-btn" id="addVendorBtn">
+            + Add Vendor
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH / FILTER -->
+
+    <div class="vendor-toolbar">
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="vendorSearch"
+                placeholder="Search vendors..."
+            >
+        </div>
+
+        <select id="vendorStatusFilter">
+            <option value="ALL">All Status</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+        </select>
+
+    </div>
+
+
+    <!-- VENDOR TABLE -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h3>Registered Vendors</h3>
+                <p>Food cart businesses registered in FoodCartManager</p>
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="vendor-table">
+
+                <thead>
+                    <tr>
+                        <th>Vendor Code</th>
+                        <th>Business Name</th>
+                        <th>Contact Person</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="vendorsTableBody">
+
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">&#9825;</div>
+                                <h4>Loading vendors...</h4>
+                                <p>Please wait.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     RECEIPTS PAGE
+========================================== -->
+<div class="receipts-page" style="display: none;">
+
+    <div class="page-header">
+        <div>
+            <h2>Receipts</h2>
+            <p>Track, view, and print official rental payment receipts</p>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon pink">&#128196;</span>
+                <span class="trend positive">All</span>
+            </div>
+            <div class="stat-card">
+                <p>Total Receipts</p>
+                <h3 id="receiptsTotalCount">0</h3>
+            </div>
+            <span class="stat-description">Issued payment receipts</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon purple">&#128424;</span>
+                <span class="trend">Printed</span>
+            </div>
+            <div class="stat-card">
+                <p>Printed Receipts</p>
+                <h3 id="receiptsPrintedCount">0</h3>
+            </div>
+            <span class="stat-description">Physical / PDF receipts issued</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon soft">&#9200;</span>
+                <span class="trend">Pending</span>
+            </div>
+            <div class="stat-card">
+                <p>Unprinted</p>
+                <h3 id="receiptsUnprintedCount">0</h3>
+            </div>
+            <span class="stat-description">Never printed yet</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon rose">&#8369;</span>
+                <span class="trend">Total</span>
+            </div>
+            <div class="stat-card">
+                <p>Receipted Amount</p>
+                <h3 id="receiptsTotalAmount">&#8369;0.00</h3>
+            </div>
+            <span class="stat-description">Gross total acknowledged</span>
+        </div>
+    </div>
+
+    <!-- SEARCH / FILTER -->
+    <div class="vendor-toolbar">
+        <div class="search-box">
+            <input type="text" id="receiptSearch" placeholder="Search receipt #, vendor, reference...">
+        </div>
+        <select id="receiptStatusFilter">
+            <option value="ALL">All Statuses</option>
+            <option value="PRINTED">Printed</option>
+            <option value="CREATED">Unprinted (Created)</option>
+        </select>
+    </div>
+
+    <!-- RECEIPTS TABLE -->
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Official Receipts</h3>
+                <p>Audit trail of all generated payment receipts</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="vendor-table">
+                <thead>
+                    <tr>
+                        <th>Receipt #</th>
+                        <th>Vendor</th>
+                        <th>Rental</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Payment Date</th>
+                        <th>Print Count</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="receiptsTableBody">
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <h4>Loading receipts...</h4>
+                                <p>Please wait.</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     SETTINGS PAGE
+========================================== -->
+<div class="settings-page" style="display: none;">
+
+    <div class="page-header">
+        <div>
+            <h2>Business Settings & Branding</h2>
+            <p>Customize company profile, contact details, currency, and receipt policies for your food cart operations.</p>
+        </div>
+    </div>
+
+    <div class="settings-container">
+
+        <!-- SETTINGS FORM CARD -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h3>Company Profile</h3>
+                <p>Details displayed on receipts and official documents</p>
+            </div>
+
+            <form id="settingsForm" onsubmit="saveSettings(event)">
+                <div class="settings-grid">
+
+                    <div class="form-group form-full">
+                        <label for="settingBusinessName">Business / Company Name *</label>
+                        <input type="text" id="settingBusinessName" required placeholder="e.g. FoodCart Park & Leasing">
+                        <small class="form-hint">Appears at the top of all official receipts and invoices.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="settingCurrency">Operating Currency</label>
+                        <select id="settingCurrency">
+                            <option value="PHP">Philippine Peso (PHP ₱)</option>
+                            <option value="USD">US Dollar (USD $)</option>
+                            <option value="EUR">Euro (EUR €)</option>
+                            <option value="SGD">Singapore Dollar (SGD S$)</option>
+                            <option value="GBP">British Pound (GBP £)</option>
+                            <option value="AUD">Australian Dollar (AUD A$)</option>
+                            <option value="CAD">Canadian Dollar (CAD C$)</option>
+                            <option value="JPY">Japanese Yen (JPY ¥)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="settingPhone">Contact Phone</label>
+                        <input type="text" id="settingPhone" placeholder="e.g. +63 917 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="settingEmail">Official Email</label>
+                        <input type="email" id="settingEmail" placeholder="e.g. contact@foodcartpark.ph">
+                    </div>
+
+                    <div class="form-group form-full">
+                        <label for="settingAddress">Business Address</label>
+                        <input type="text" id="settingAddress" placeholder="e.g. 123 Commercial Ave, Metro Manila">
+                    </div>
+
+                    <div class="form-group form-full">
+                        <label for="settingReceiptHeader">Receipt Header Title</label>
+                        <input type="text" id="settingReceiptHeader" placeholder="e.g. Official Rental Acknowledgment Receipt">
+                    </div>
+
+                    <div class="form-group form-full">
+                        <label for="settingReceiptFooter">Receipt Terms & Footer Policy</label>
+                        <textarea id="settingReceiptFooter" rows="3" placeholder="e.g. Thank you for your business! Please retain this receipt for your bookkeeping and tax records."></textarea>
+                        <small class="form-hint">Printed at the bottom of every receipt.</small>
+                    </div>
+
+                </div>
+
+                <div id="settingsFormMessage" class="form-message" style="display:none;"></div>
+
+                <div class="settings-actions">
+                    <button type="submit" class="primary-btn" id="saveSettingsBtn">
+                        Save Business Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- LIVE BRANDING PREVIEW CARD -->
+        <div class="preview-card">
+            <div class="preview-card-header">
+                <h4>Live Receipt Header Preview</h4>
+                <span class="preview-tag">Preview</span>
+            </div>
+            <div class="preview-card-body">
+                <div class="preview-paper">
+                    <div class="preview-logo-placeholder">&#127828;</div>
+                    <h3 id="previewBizName">FoodCart Park & Leasing</h3>
+                    <p id="previewBizAddress">123 Commercial Ave, Metro Manila</p>
+                    <p id="previewBizContact">Tel: +63 917 123 4567 | contact@foodcartpark.ph</p>
+                    <div class="preview-divider"></div>
+                    <h5 id="previewHeaderTitle">OFFICIAL RENTAL RECEIPT</h5>
+                    <div class="preview-sample-row">
+                        <span>Sample Rent Amount:</span>
+                        <strong id="previewCurrencySample">₱350.00</strong>
+                    </div>
+                    <div class="preview-divider dashed"></div>
+                    <p id="previewFooterText" class="preview-footer-note">Thank you for your business! Please keep this receipt for your records.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/app.js"></script>
+
+
+<!-- ==========================================
+     NEW RENTAL MODAL
+========================================== -->
+
+<div
+    id="rentalModal"
+    class="modal-overlay"
+    style="display:none;"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+                <h3>New Rental</h3>
+                <p>Create a new food cart rental transaction.</p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeRentalModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="rentalForm">
+
+            <div class="form-grid">
+
+
+                <!-- VENDOR -->
+
+                <div class="form-group">
+
+                    <label for="rentalVendor">
+                        Vendor <span>*</span>
+                    </label>
+
+                    <select
+                        id="rentalVendor"
+                        required
+                    >
+
+                        <option value="">
+                            Select vendor
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- FOOD CART -->
+
+                <div class="form-group">
+
+                    <label for="rentalCart">
+                        Food Cart
+                    </label>
+
+                    <select id="rentalCart">
+
+                        <option value="">
+                            Select food cart
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- START DATE -->
+
+                <div class="form-group">
+
+                    <label for="rentalStartDate">
+                        Start Date <span>*</span>
+                    </label>
+
+                    <input
+                        type="date"
+                        id="rentalStartDate"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- END DATE -->
+
+                <div class="form-group">
+
+                    <label for="rentalEndDate">
+                        End Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="rentalEndDate"
+                    >
+
+                </div>
+
+
+                <!-- BILLING -->
+
+                <div class="form-group">
+
+                    <label for="rentalBilling">
+                        Billing Cycle
+                    </label>
+
+                    <select id="rentalBilling">
+
+                        <option value="MONTHLY">
+                            Monthly
+                        </option>
+
+                        <option value="WEEKLY">
+                            Weekly
+                        </option>
+
+                        <option value="DAILY">
+                            Daily
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- RENT -->
+
+                <div class="form-group">
+
+                    <label for="rentalAmount">
+                        Rent Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="rentalAmount"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <!-- SECURITY DEPOSIT -->
+
+                <div class="form-group">
+
+                    <label for="rentalDeposit">
+                        Security Deposit
+                    </label>
+
+                    <input
+                        type="number"
+                        id="rentalDeposit"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label for="rentalStatus">
+                        Status
+                    </label>
+
+                    <select id="rentalStatus">
+
+                        <option value="ACTIVE">
+                            Active
+                        </option>
+
+                        <option value="COMPLETED">
+                            Completed
+                        </option>
+
+                        <option value="CANCELLED">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- NOTES -->
+
+                <div class="form-group form-full">
+
+                    <label for="rentalNotes">
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="rentalNotes"
+                        rows="3"
+                        placeholder="Optional notes..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="rentalFormMessage"
+                class="form-message"
+                style="display:none;"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="closeRentalModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Create Rental
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+  <!-- ==========================================
+       RECORD PAYMENT MODAL
+  ========================================== -->
+
+  <div
+      id="paymentModal"
+      class="modal-overlay"
+      style="display:none;"
+  >
+
+      <div class="modal-card">
+
+          <div class="modal-header">
+
+              <div>
+                  <h3>Record Payment</h3>
+                  <p>Record a rental payment transaction.</p>
+              </div>
+
+              <button
+                  type="button"
+                  class="modal-close"
+                  onclick="closePaymentModal()"
+              >
+                  ×
+              </button>
+
+          </div>
+
+
+          <form id="paymentForm">
+
+              <div class="form-grid">
+
+                  <!-- RENTAL -->
+                  <div class="form-group form-full">
+
+                      <label for="paymentRental">
+                          Rental <span>*</span>
+                      </label>
+
+                      <select
+                          id="paymentRental"
+                          required
+                      >
+                          <option value="">
+                              Select active rental
+                          </option>
+                      </select>
+
+                  </div>
+
+
+                  <!-- VENDOR -->
+                  <div class="form-group">
+
+                      <label for="paymentVendor">
+                          Vendor
+                      </label>
+
+                      <input
+                          type="text"
+                          id="paymentVendor"
+                          value=""
+                          placeholder="Selected rental vendor"
+                          readonly
+                      >
+
+                  </div>
+
+
+                  <!-- AMOUNT -->
+                  <div class="form-group">
+
+                      <label for="paymentAmount">
+                          Amount <span>*</span>
+                      </label>
+
+                      <input
+                          type="number"
+                          id="paymentAmount"
+                          min="0.01"
+                          step="0.01"
+                          value=""
+                          placeholder="0.00"
+                          required
+                      >
+
+                  </div>
+
+
+                  <!-- PAYMENT METHOD -->
+                  <div class="form-group">
+
+                      <label for="paymentMethod">
+                          Payment Method <span>*</span>
+                      </label>
+
+                      <select
+                          id="paymentMethod"
+                          required
+                      >
+                          <option value="CASH">Cash</option>
+                          <option value="GCASH">GCash</option>
+                          <option value="BANK">Bank Transfer</option>
+                          <option value="CARD">Card</option>
+                          <option value="OTHER">Other</option>
+                      </select>
+
+                  </div>
+
+
+                  <!-- PAYMENT DATE -->
+                  <div class="form-group">
+
+                      <label for="paymentDate">
+                          Payment Date <span>*</span>
+                      </label>
+
+                      <input
+                          type="datetime-local"
+                          id="paymentDate"
+                          required
+                      >
+
+                  </div>
+
+
+                  <!-- PERIOD START -->
+                  <div class="form-group">
+
+                      <label for="paymentPeriodStart">
+                          Period Start
+                      </label>
+
+                      <input
+                          type="date"
+                          id="paymentPeriodStart"
+                      >
+
+                  </div>
+
+
+                  <!-- PERIOD END -->
+                  <div class="form-group">
+
+                      <label for="paymentPeriodEnd">
+                          Period End
+                      </label>
+
+                      <input
+                          type="date"
+                          id="paymentPeriodEnd"
+                      >
+
+                  </div>
+
+
+                  <!-- REFERENCE -->
+                  <div class="form-group">
+
+                      <label for="paymentReference">
+                          Reference Number
+                      </label>
+
+                      <input
+                          type="text"
+                          id="paymentReference"
+                          maxlength="100"
+                          placeholder="Optional reference number"
+                      >
+
+                  </div>
+
+
+                  <!-- NOTES -->
+                  <div class="form-group form-full">
+
+                      <label for="paymentNotes">
+                          Notes
+                      </label>
+
+                      <textarea
+                          id="paymentNotes"
+                          rows="3"
+                          placeholder="Optional notes..."
+                      ></textarea>
+
+                  </div>
+
+              </div>
+
+
+              <div
+                  id="paymentFormMessage"
+                  class="form-message"
+                  style="display:none;"
+              ></div>
+
+
+              <div class="modal-footer">
+
+                  <button
+                      type="button"
+                      class="secondary-btn"
+                      onclick="closePaymentModal()"
+                  >
+                      Cancel
+                  </button>
+
+                  <button
+                      type="submit"
+                      class="primary-btn"
+                  >
+                      Save Payment
+                  </button>
+
+              </div>
+
+          </form>
+
+      </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       EDIT PAYMENT MODAL
+  ========================================== -->
+
+  <div
+      id="editPaymentModal"
+      class="modal-overlay"
+      style="display:none;"
+  >
+
+      <div class="modal-card">
+
+          <div class="modal-header">
+
+              <div>
+                  <h3>Edit Payment</h3>
+                  <p id="editPaymentReceiptSubtext">Update payment transaction details.</p>
+              </div>
+
+              <button
+                  type="button"
+                  class="modal-close"
+                  onclick="closeEditPaymentModal()"
+              >
+                  ×
+              </button>
+
+          </div>
+
+
+          <!-- PAYMENT CONTEXT SUMMARY BANNER -->
+          <div class="payment-summary-banner">
+              <div class="payment-summary-item">
+                  <span class="payment-summary-label">Receipt #</span>
+                  <span id="editPaymentReceiptBadge" class="payment-summary-value badge">-</span>
+              </div>
+              <div class="payment-summary-item">
+                  <span class="payment-summary-label">Rental</span>
+                  <span id="editPaymentRentalText" class="payment-summary-value">-</span>
+              </div>
+              <div class="payment-summary-item">
+                  <span class="payment-summary-label">Vendor</span>
+                  <span id="editPaymentVendorText" class="payment-summary-value">-</span>
+              </div>
+          </div>
+
+
+          <form id="editPaymentForm">
+
+              <input type="hidden" id="editPaymentId" value="">
+              <input type="hidden" id="editPaymentRentalId" value="">
+              <input type="hidden" id="editPaymentVendorId" value="">
+              <input type="hidden" id="editPaymentReceipt" value="">
+              <input type="hidden" id="editPaymentRental" value="">
+              <input type="hidden" id="editPaymentVendor" value="">
+
+              <div class="form-grid">
+
+                  <!-- AMOUNT -->
+                  <div class="form-group">
+
+                      <label for="editPaymentAmount">
+                          Amount <span>*</span>
+                      </label>
+
+                      <input
+                          type="number"
+                          id="editPaymentAmount"
+                          min="0.01"
+                          step="0.01"
+                          value=""
+                          placeholder="0.00"
+                          required
+                      >
+
+                  </div>
+
+
+                  <!-- PAYMENT METHOD -->
+                  <div class="form-group">
+
+                      <label for="editPaymentMethod">
+                          Payment Method <span>*</span>
+                      </label>
+
+                      <select
+                          id="editPaymentMethod"
+                          required
+                      >
+                          <option value="CASH">Cash</option>
+                          <option value="GCASH">GCash</option>
+                          <option value="BANK">Bank Transfer</option>
+                          <option value="CARD">Card</option>
+                          <option value="OTHER">Other</option>
+                      </select>
+
+                  </div>
+
+
+                  <!-- PAYMENT DATE -->
+                  <div class="form-group">
+
+                      <label for="editPaymentDate">
+                          Payment Date <span>*</span>
+                      </label>
+
+                      <input
+                          type="datetime-local"
+                          id="editPaymentDate"
+                          required
+                      >
+
+                  </div>
+
+
+                  <!-- REFERENCE -->
+                  <div class="form-group">
+
+                      <label for="editPaymentReference">
+                          Reference Number
+                      </label>
+
+                      <input
+                          type="text"
+                          id="editPaymentReference"
+                          maxlength="100"
+                          placeholder="Optional reference number"
+                      >
+
+                  </div>
+
+
+                  <!-- PERIOD START -->
+                  <div class="form-group">
+
+                      <label for="editPaymentPeriodStart">
+                          Period Start
+                      </label>
+
+                      <input
+                          type="date"
+                          id="editPaymentPeriodStart"
+                      >
+
+                  </div>
+
+
+                  <!-- PERIOD END -->
+                  <div class="form-group">
+
+                      <label for="editPaymentPeriodEnd">
+                          Period End
+                      </label>
+
+                      <input
+                          type="date"
+                          id="editPaymentPeriodEnd"
+                      >
+
+                  </div>
+
+
+                  <!-- NOTES -->
+                  <div class="form-group form-full">
+
+                      <label for="editPaymentNotes">
+                          Notes
+                      </label>
+
+                      <textarea
+                          id="editPaymentNotes"
+                          rows="3"
+                          placeholder="Optional notes..."
+                      ></textarea>
+
+                  </div>
+
+              </div>
+
+
+              <div
+                  id="editPaymentFormMessage"
+                  class="form-message"
+                  style="display:none;"
+              ></div>
+
+
+              <div class="modal-footer">
+
+                  <button
+                      type="button"
+                      class="secondary-btn"
+                      onclick="closeEditPaymentModal()"
+                  >
+                      Cancel
+                  </button>
+
+                  <button
+                      type="submit"
+                      class="primary-btn"
+                  >
+                      Update Payment
+                  </button>
+
+              </div>
+
+          </form>
+
+      </div>
+
+  </div>
+
+<!-- ==========================================
+     OFFICIAL RECEIPT / PRINT MODAL
+========================================== -->
+<div id="receiptModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card receipt-modal-card">
+
+        <div class="modal-header non-printable">
+            <div>
+                <h3>Official Receipt Voucher</h3>
+                <p>Preview and print official payment acknowledgment</p>
+            </div>
+            <button type="button" class="modal-close" onclick="closeReceiptModal()">&times;</button>
+        </div>
+
+        <!-- PRINTABLE RECEIPT CONTAINER -->
+        <div class="receipt-paper" id="printableReceipt">
+
+            <!-- BUSINESS HEADER (CUSTOMIZABLE VIA SETTINGS) -->
+            <div class="receipt-header-section">
+                <div class="receipt-brand-badge">&#127828;</div>
+                <h2 id="receiptBizName" class="receipt-biz-name">FoodCart Park &amp; Leasing</h2>
+                <p id="receiptBizAddress" class="receipt-biz-address">123 Commercial Avenue, Metro Manila</p>
+                <p id="receiptBizContact" class="receipt-biz-contact">Tel: +63 917 123 4567 | contact@foodcartpark.ph</p>
+                <div class="receipt-title-banner">
+                    <span id="receiptTitleText">OFFICIAL RENTAL RECEIPT</span>
+                </div>
+            </div>
+
+            <!-- RECEIPT META (NUMBER, DATE, STATUS) -->
+            <div class="receipt-meta-grid">
+                <div>
+                    <span class="meta-label">Receipt Number:</span>
+                    <strong id="receiptNumberVal" class="meta-value highlight">PAY-000000</strong>
+                </div>
+                <div>
+                    <span class="meta-label">Date Issued:</span>
+                    <strong id="receiptDateVal" class="meta-value">--</strong>
+                </div>
+                <div>
+                    <span class="meta-label">Print Status:</span>
+                    <span id="receiptStatusBadge" class="receipt-badge">CREATED</span>
+                </div>
+                <div>
+                    <span class="meta-label">Print Copies:</span>
+                    <strong id="receiptPrintCountVal" class="meta-value">0</strong>
+                </div>
+            </div>
+
+            <div class="receipt-divider dashed"></div>
+
+            <!-- BILLED TO / VENDOR & RENTAL DETAILS -->
+            <div class="receipt-entity-grid">
+                <div class="entity-col">
+                    <h4>RECEIVED FROM (VENDOR)</h4>
+                    <p class="entity-name" id="receiptVendorName">Vendor Business Name</p>
+                    <p class="entity-sub" id="receiptVendorContact">Contact: --</p>
+                    <p class="entity-sub" id="receiptVendorPhone">Phone: --</p>
+                </div>
+                <div class="entity-col">
+                    <h4>RENTAL / STALL DETAILS</h4>
+                    <p class="entity-name" id="receiptRentalCode">RNT-000000</p>
+                    <p class="entity-sub" id="receiptBillingCycle">Billing: Monthly</p>
+                    <p class="entity-sub" id="receiptPeriodCovered">Period: --</p>
+                </div>
+            </div>
+
+            <!-- PAYMENT BREAKDOWN TABLE -->
+            <table class="receipt-breakdown-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Method</th>
+                        <th>Reference</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong id="receiptItemDescription">Food Cart Rental Fee</strong>
+                            <div class="sub-note" id="receiptItemNotes">--</div>
+                        </td>
+                        <td id="receiptItemMethod">GCASH</td>
+                        <td id="receiptItemRef">--</td>
+                        <td class="text-right amount-cell" id="receiptItemAmount">&#8369;0.00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="total-label">TOTAL AMOUNT PAID:</td>
+                        <td class="total-value" id="receiptTotalAmount">&#8369;0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- FOOTER TERMS (CUSTOMIZABLE VIA SETTINGS) -->
+            <div class="receipt-footer-section">
+                <p id="receiptFooterTerms" class="footer-terms">
+                    Thank you for your business! Please keep this receipt for your records.
+                </p>
+
+                <div class="receipt-signatures">
+                    <div class="sig-block">
+                        <div class="sig-line"></div>
+                        <span>Authorized Representative</span>
+                    </div>
+                    <div class="sig-block">
+                        <div class="sig-line"></div>
+                        <span>Received By / Tenant</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MODAL FOOTER (PRINT & CLOSE BUTTONS) -->
+        <div class="modal-footer non-printable">
+            <button type="button" class="secondary-btn" onclick="closeReceiptModal()">
+                Close
+            </button>
+            <button type="button" class="primary-btn" id="printReceiptBtn" onclick="triggerPrintReceipt()">
+                &#128424; Print Receipt
+            </button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
