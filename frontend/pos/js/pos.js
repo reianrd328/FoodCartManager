@@ -698,3 +698,4 @@ function reprintSlip(orderId) {
 function formatCurrency(val) {
     return "₱" + Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+

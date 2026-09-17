@@ -77,6 +77,20 @@ def create_app():
     def pos_static(filename):
         return send_from_directory(pos_dir, filename)
 
+    @app.route("/manifest.json")
+    def root_manifest():
+        return send_from_directory(base_dir, "manifest.json", mimetype="application/manifest+json")
+
+    @app.route("/sw.js")
+    def root_sw():
+        response = send_from_directory(base_dir, "sw.js", mimetype="application/javascript")
+        response.headers["Service-Worker-Allowed"] = "/"
+        return response
+
+    @app.route("/icons/<path:filename>")
+    def root_icons(filename):
+        return send_from_directory(os.path.join(base_dir, "icons"), filename)
+
     @app.route("/api/health")
     def health():
         try:
