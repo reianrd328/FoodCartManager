@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, redirect
 from flask_cors import CORS
 
 from app.db import get_connection
@@ -69,6 +69,9 @@ def create_app():
         return send_from_directory(vendor_dir, filename)
 
     @app.route("/pos")
+    def pos_redirect():
+        return redirect("/pos/", code=301)
+
     @app.route("/pos/")
     def pos_page():
         return send_from_directory(pos_dir, "index.html")
@@ -76,6 +79,18 @@ def create_app():
     @app.route("/pos/<path:filename>")
     def pos_static(filename):
         return send_from_directory(pos_dir, filename)
+
+    @app.route("/css/<path:filename>")
+    def root_css_fallback(filename):
+        if os.path.exists(os.path.join(pos_dir, "css", filename)):
+            return send_from_directory(os.path.join(pos_dir, "css"), filename)
+        return send_from_directory(os.path.join(admin_dir, "css"), filename)
+
+    @app.route("/js/<path:filename>")
+    def root_js_fallback(filename):
+        if os.path.exists(os.path.join(pos_dir, "js", filename)):
+            return send_from_directory(os.path.join(pos_dir, "js"), filename)
+        return send_from_directory(os.path.join(admin_dir, "js"), filename)
 
     @app.route("/manifest.json")
     def root_manifest():
