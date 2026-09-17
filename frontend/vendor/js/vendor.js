@@ -88,6 +88,9 @@ async function loadPortalData() {
         // 3. Fetch Payments & Receipts
         loadVendorPayments(vendorId);
 
+        // 4. Fetch Stall Menu & Inventory
+        loadVendorInventory(vendorId);
+
     } catch (err) {
         console.error("Portal loading error:", err);
     }
@@ -271,6 +274,269 @@ async function triggerPrintReceipt() {
     window.print();
 }
 
+// ===================================================
+// STALL MENU & INVENTORY MANAGEMENT (VENDOR PORTAL)
+// ===================================================
+
+let vendorMenuItems = [];
+
+async function loadVendorInventory(vendorId) {
+    const tbody = document.querySelector("#vendorMenuTableBody");
+    if (!tbody) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${vendorId}`);
+        const json = await res.json();
+
+        if (json.success && json.data) {
+            vendorMenuItems = json.data.items || [];
+            const categories = json.data.categories || [];
+
+            // Populate Add Item datalist
+            const datalist = document.querySelector("#vCatDatalist");
+            if (datalist) {
+                const filtered = categories.filter(c => c !== "All");
+                datalist.innerHTML = filtered.map(c => `<option value="${c}"></option>`).join("");
+            }
+
+            renderVendorInventoryTable();
+        } else {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-box">
+                            <h4>No menu items found</h4>
+                            <p>Click "Add Food Item" above to create items for your food cart.</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+    } catch (err) {
+        console.error("Error loading inventory:", err);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center;padding:20px;color:#c00;">
+                    Failed to load stall menu &amp; inventory.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+function renderVendorInventoryTable() {
+    const tbody = document.querySelector("#vendorMenuTableBody");
+    if (!tbody) return;
+
+    if (vendorMenuItems.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="empty-box">
+                        <h4>No menu items yet</h4>
+                        <p>Click "+ Add Food Item" above to add your products and track live stock counts.</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = vendorMenuItems.map(it => {
+        const stock = Number(it.stock_quantity || 0);
+        const threshold = Number(it.low_stock_threshold || 5);
+        let tagClass = "in-stock";
+        let tagText = `In Stock (${stock})`;
+
+        if (stock <= 0) {
+            tagClass = "out-of-stock";
+            tagText = "Out of Stock (0)";
+        } else if (stock <= threshold) {
+            tagClass = "low-stock";
+            tagText = `⚠️ Low Stock (${stock})`;
+        }
+
+        const isAvail = it.is_available === 1 || it.is_available === true;
+
+        return `
+            <tr>
+                <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span style="font-size:24px;line-height:1;">${it.image_emoji || '🍲'}</span>
+                        <div>
+                            <strong>${it.name}</strong>
+                            ${it.description ? `<div style="font-size:11px;color:#785869;margin-top:2px;">${it.description}</div>` : ''}
+                        </div>
+                    </div>
+                </td>
+                <td><span style="background:#f1e2eb;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;">${it.category || 'General'}</span></td>
+                <td><strong style="color:var(--primary);font-size:14px;">${formatCurrency(it.price)}</strong></td>
+                <td>
+                    <span class="status-tag ${tagClass}">
+                        ${tagText}
+                    </span>
+                </td>
+                <td>
+                    <span style="font-size:12px;font-weight:700;color:${isAvail ? '#1a7f37' : '#888'};">
+                        ${isAvail ? '● Active' : '○ Hidden'}
+                    </span>
+                </td>
+                <td>
+                    <button type="button" class="quick-stock-btn" onclick="quickVendorRestock(${it.id}, 10)" title="Add 10 units">+10</button>
+                    <button type="button" class="quick-stock-btn" onclick="quickVendorRestock(${it.id}, 25)" title="Add 25 units">+25</button>
+                    <button type="button" class="quick-stock-btn" onclick="promptVendorSetStock(${it.id}, ${stock})" title="Set exact count">Set</button>
+                    <button type="button" class="quick-stock-btn danger" onclick="deleteVendorItem(${it.id}, '${it.name.replace(/'/g, "\\'")}')" title="Delete item">🗑</button>
+                </td>
+            </tr>
+        `;
+    }).join("");
+}
+
+function openVendorAddModal() {
+    const modal = document.querySelector("#vendorAddItemModal");
+    if (modal) modal.style.display = "flex";
+}
+
+function closeVendorAddModal() {
+    const modal = document.querySelector("#vendorAddItemModal");
+    if (modal) modal.style.display = "none";
+}
+
+async function handleVendorAddItem(event) {
+    event.preventDefault();
+    if (!currentVendorUser || !currentVendorUser.vendor_id) {
+        alert("Session expired. Please log in again.");
+        return;
+    }
+
+    const saveBtn = document.querySelector("#vSaveBtn");
+    const name = document.querySelector("#vItemName").value.trim();
+    const category = document.querySelector("#vItemCat").value.trim() || "General";
+    const price = parseFloat(document.querySelector("#vItemPrice").value) || 0;
+    const cost = parseFloat(document.querySelector("#vItemCost").value) || 0;
+    const stock_quantity = parseInt(document.querySelector("#vItemStock").value) || 50;
+    const low_stock_threshold = parseInt(document.querySelector("#vItemThreshold").value) || 5;
+    const description = document.querySelector("#vItemDesc").value.trim();
+    const image_emoji = document.querySelector("#vItemEmoji").value || "🍲";
+
+    if (!name) {
+        alert("Item name is required.");
+        return;
+    }
+
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Adding Item...";
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                vendor_id: currentVendorUser.vendor_id,
+                name,
+                category,
+                price,
+                cost,
+                stock_quantity,
+                low_stock_threshold,
+                description,
+                image_emoji,
+                track_inventory: true
+            })
+        });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+            closeVendorAddModal();
+            document.querySelector("#vendorAddItemForm").reset();
+            await loadVendorInventory(currentVendorUser.vendor_id);
+            alert(`"${name}" was successfully added to your stall's menu!`);
+        } else {
+            alert(json.error || "Failed to add item.");
+        }
+    } catch (err) {
+        console.error("Add item error:", err);
+        alert("Network error: Could not add item.");
+    } finally {
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = "➕ Add Food Item";
+        }
+    }
+}
+
+async function quickVendorRestock(itemId, amount) {
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}/adjust-stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adjustment: amount })
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            await loadVendorInventory(currentVendorUser.vendor_id);
+        } else {
+            alert(json.error || "Failed to adjust stock.");
+        }
+    } catch (err) {
+        console.error("Restock error:", err);
+        alert("Network error: Could not update stock.");
+    }
+}
+
+async function promptVendorSetStock(itemId, currentStock) {
+    const item = vendorMenuItems.find(i => i.id === itemId);
+    const name = item ? item.name : "item";
+    const input = prompt(`Enter new exact inventory stock count for "${name}":`, currentStock);
+    if (input === null) return;
+
+    const newStock = parseInt(input.trim());
+    if (isNaN(newStock) || newStock < 0) {
+        alert("Please enter a valid non-negative number.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}/adjust-stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ new_stock: newStock })
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            await loadVendorInventory(currentVendorUser.vendor_id);
+        } else {
+            alert(json.error || "Failed to set stock.");
+        }
+    } catch (err) {
+        console.error("Set stock error:", err);
+        alert("Network error: Could not set stock.");
+    }
+}
+
+async function deleteVendorItem(itemId, itemName) {
+    if (!confirm(`Are you sure you want to remove "${itemName}" from your menu?`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}`, {
+            method: "DELETE"
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            await loadVendorInventory(currentVendorUser.vendor_id);
+        } else {
+            alert(json.error || "Failed to remove item.");
+        }
+    } catch (err) {
+        console.error("Delete item error:", err);
+        alert("Network error: Could not delete item.");
+    }
+}
+
 function logout() {
     localStorage.removeItem("foodcart_token");
     localStorage.removeItem("foodcart_user");
@@ -280,4 +546,10 @@ function logout() {
 window.openReceiptModal = openReceiptModal;
 window.closeReceiptModal = closeReceiptModal;
 window.triggerPrintReceipt = triggerPrintReceipt;
+window.openVendorAddModal = openVendorAddModal;
+window.closeVendorAddModal = closeVendorAddModal;
+window.handleVendorAddItem = handleVendorAddItem;
+window.quickVendorRestock = quickVendorRestock;
+window.promptVendorSetStock = promptVendorSetStock;
+window.deleteVendorItem = deleteVendorItem;
 window.logout = logout;

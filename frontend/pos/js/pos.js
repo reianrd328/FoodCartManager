@@ -199,7 +199,7 @@ function renderMenu() {
         gridEl.innerHTML = `
             <div style="grid-column: 1 / -1; text-align:center; padding: 40px 20px; color: #888;">
                 <p style="font-size: 16px; font-weight: 700;">No matching food items</p>
-                <small>Try selecting a different category or clearing search</small>
+                <small>Try selecting a different category, clearing search, or adding new items via Stock / Menu</small>
             </div>
         `;
         return;
@@ -210,11 +210,35 @@ function renderMenu() {
         const qtyInCart = inCartItem ? inCartItem.quantity : 0;
         const hasCart = qtyInCart > 0;
 
+        const trackInv = item.track_inventory === 1 || item.track_inventory === true;
+        const stockQty = (item.stock_quantity !== undefined && item.stock_quantity !== null) ? Number(item.stock_quantity) : 50;
+        const threshold = Number(item.low_stock_threshold || 5);
+        const isOutOfStock = trackInv && stockQty <= 0;
+        const isLowStock = trackInv && !isOutOfStock && stockQty <= threshold;
+
+        let stockBadgeHtml = "";
+        if (trackInv) {
+            if (isOutOfStock) {
+                stockBadgeHtml = `<span class="stock-tag out-of-stock">&#128683; Out of stock</span>`;
+            } else if (isLowStock) {
+                stockBadgeHtml = `<span class="stock-tag low-stock">&#9888; ${stockQty} left</span>`;
+            } else {
+                stockBadgeHtml = `<span class="stock-tag in-stock">&#128230; ${stockQty} left</span>`;
+            }
+        }
+
+        const clickHandler = isOutOfStock
+            ? `showToastNotification('🚫 &quot;${item.name.replace(/'/g, "\\'")}&quot; is currently out of stock!')`
+            : `addToCartById(${item.id})`;
+
         return `
-            <div class="item-card ${hasCart ? 'has-in-cart' : ''}" onclick="addToCartById(${item.id})">
+            <div class="item-card ${hasCart ? 'has-in-cart' : ''} ${isOutOfStock ? 'is-out-of-stock' : ''}" onclick="${clickHandler}">
                 <div class="card-top">
                     <span class="item-emoji">${item.image_emoji || '🍲'}</span>
-                    ${hasCart ? `<span class="in-cart-badge">${qtyInCart} in cart</span>` : ''}
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                        ${hasCart ? `<span class="in-cart-badge">${qtyInCart} in cart</span>` : ''}
+                        ${stockBadgeHtml}
+                    </div>
                 </div>
                 <div class="card-middle">
                     <div class="item-name">${item.name}</div>
@@ -222,7 +246,9 @@ function renderMenu() {
                 </div>
                 <div class="card-bottom">
                     <span class="item-price">${formatCurrency(item.price)}</span>
-                    <button type="button" class="add-plus-btn" title="Add to Order">+</button>
+                    <button type="button" class="add-plus-btn" title="${isOutOfStock ? 'Out of Stock' : 'Add to Order'}" ${isOutOfStock ? 'disabled' : ''}>
+                        ${isOutOfStock ? '✕' : '+'}
+                    </button>
                 </div>
             </div>
         `;
@@ -233,7 +259,22 @@ function addToCartById(itemId) {
     const item = state.menuItems.find(i => i.id === itemId);
     if (!item) return;
 
+    const trackInv = item.track_inventory === 1 || item.track_inventory === true;
+    const stockQty = (item.stock_quantity !== undefined && item.stock_quantity !== null) ? Number(item.stock_quantity) : 50;
+
+    if (trackInv && stockQty <= 0) {
+        showToastNotification(`🚫 "${item.name}" is out of stock!`);
+        return;
+    }
+
     const existing = state.cart.find(c => c.menu_item_id === item.id);
+    const currentQty = existing ? existing.quantity : 0;
+
+    if (trackInv && currentQty + 1 > stockQty) {
+        showToastNotification(`⚠️ Only ${stockQty} available for "${item.name}"!`);
+        return;
+    }
+
     if (existing) {
         existing.quantity += 1;
     } else {
@@ -257,6 +298,17 @@ function addToCartById(itemId) {
 function changeItemQty(itemId, delta) {
     const item = state.cart.find(c => c.menu_item_id === itemId);
     if (!item) return;
+
+    if (delta > 0) {
+        const menuItem = state.menuItems.find(i => i.id === itemId);
+        if (menuItem && (menuItem.track_inventory === 1 || menuItem.track_inventory === true)) {
+            const stockQty = (menuItem.stock_quantity !== undefined && menuItem.stock_quantity !== null) ? Number(menuItem.stock_quantity) : 50;
+            if (item.quantity + delta > stockQty) {
+                showToastNotification(`⚠️ Max available stock (${stockQty}) reached for "${item.item_name}"!`);
+                return;
+            }
+        }
+    }
 
     item.quantity += delta;
     if (item.quantity <= 0) {
@@ -503,7 +555,11 @@ async function submitOrder() {
             if (notesInput) notesInput.value = "";
             if (refInput) refInput.value = "";
             renderCart();
-            renderMenu();
+            
+            // Immediately reload menu from database to reflect decremented inventory
+            if (state.currentVendorId) {
+                await loadMenu(state.currentVendorId);
+            }
             loadQueueCount();
         } else {
             alert(json.error || "Failed to process order.");
@@ -699,3 +755,316 @@ function formatCurrency(val) {
     return "₱" + Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// ===================================================
+// STALL INVENTORY & MENU MANAGEMENT (SELF-SERVICE)
+// ===================================================
+
+let stockSearchTerm = "";
+
+function openStockModal() {
+    const modal = document.querySelector("#stockMgmtModal");
+    if (!modal) return;
+
+    const titleEl = document.querySelector("#stockModalTitle");
+    const subEl = document.querySelector("#stockModalSub");
+    if (state.currentStall) {
+        if (titleEl) titleEl.textContent = `${state.currentStall.business_name} - Inventory & Menu`;
+        if (subEl) subEl.textContent = `Live stock monitoring for ${state.currentStall.cart_name || state.currentStall.vendor_code}`;
+    }
+
+    // Populate category datalist in Add Item form
+    const datalist = document.querySelector("#categoryDatalist");
+    if (datalist) {
+        const uniqueCats = state.categories.filter(c => c !== "All");
+        datalist.innerHTML = uniqueCats.map(c => `<option value="${c}"></option>`).join("");
+    }
+
+    switchStockTab("list");
+    renderStockList();
+    modal.style.display = "flex";
+}
+
+function closeStockModal() {
+    const modal = document.querySelector("#stockMgmtModal");
+    if (modal) modal.style.display = "none";
+}
+
+function switchStockTab(tab) {
+    const listTab = document.querySelector("#stockListTab");
+    const addTab = document.querySelector("#stockAddTab");
+    const btnList = document.querySelector("#stockTabListBtn");
+    const btnAdd = document.querySelector("#stockTabAddBtn");
+
+    if (btnList) btnList.className = `stock-tab-btn ${tab === 'list' ? 'active' : ''}`;
+    if (btnAdd) btnAdd.className = `stock-tab-btn ${tab === 'add' ? 'active' : ''}`;
+
+    if (listTab) listTab.style.display = tab === 'list' ? 'block' : 'none';
+    if (addTab) addTab.style.display = tab === 'add' ? 'block' : 'none';
+
+    if (tab === 'list') {
+        renderStockList();
+    }
+}
+
+function onStockSearchChanged() {
+    const input = document.querySelector("#stockSearchInput");
+    stockSearchTerm = (input ? input.value : "").trim().toLowerCase();
+    renderStockList();
+}
+
+function renderStockList() {
+    const container = document.querySelector("#stockItemsScroll");
+    const countBadge = document.querySelector("#stockItemCount");
+    if (!container) return;
+
+    let items = state.menuItems || [];
+    if (countBadge) countBadge.textContent = items.length;
+
+    if (stockSearchTerm) {
+        items = items.filter(i => 
+            (i.name && i.name.toLowerCase().includes(stockSearchTerm)) ||
+            (i.category && i.category.toLowerCase().includes(stockSearchTerm))
+        );
+    }
+
+    if (items.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:30px 10px;color:#888;">
+                <p style="font-weight:700;font-size:14px;color:var(--text-main);">No items found</p>
+                <small>Switch to "Add Food Item" above to add new items to your stall!</small>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = items.map(it => {
+        const stock = Number(it.stock_quantity || 0);
+        const threshold = Number(it.low_stock_threshold || 5);
+        let badgeClass = "in-stock";
+        let badgeText = `In Stock (${stock})`;
+
+        if (stock <= 0) {
+            badgeClass = "out-of-stock";
+            badgeText = `Out of Stock (0)`;
+        } else if (stock <= threshold) {
+            badgeClass = "low-stock";
+            badgeText = `⚠️ Low Stock (${stock})`;
+        }
+
+        return `
+            <div class="stock-item-row">
+                <div class="stock-item-info">
+                    <span class="stock-item-emoji">${it.image_emoji || '🍲'}</span>
+                    <div class="stock-item-details">
+                        <div class="stock-item-title">${it.name}</div>
+                        <div class="stock-item-meta">
+                            <span>${it.category || 'General'}</span>
+                            <span>•</span>
+                            <strong style="color:var(--primary);">${formatCurrency(it.price)}</strong>
+                            <span>•</span>
+                            <span class="stock-tag ${badgeClass}">${badgeText}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stock-actions">
+                    <button type="button" class="restock-btn" onclick="quickRestock(${it.id}, 10)" title="Add 10 units to stock">+10</button>
+                    <button type="button" class="restock-btn" onclick="quickRestock(${it.id}, 25)" title="Add 25 units to stock">+25</button>
+                    <button type="button" class="restock-btn" onclick="promptSetStock(${it.id}, ${stock})" title="Set exact stock count">Set</button>
+                    <button type="button" class="restock-btn delete-item" onclick="deleteStallItem(${it.id}, '${it.name.replace(/'/g, "\\'")}')" title="Delete menu item">🗑</button>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+async function quickRestock(itemId, amount) {
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}/adjust-stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adjustment: amount })
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            showToastNotification(`📦 Restocked +${amount}! New stock: ${json.data.stock_quantity}`);
+            if (state.currentVendorId) {
+                await loadMenu(state.currentVendorId);
+            }
+            renderStockList();
+        } else {
+            alert(json.error || "Failed to update stock.");
+        }
+    } catch (err) {
+        console.error("Restock error:", err);
+        alert("Network error: Could not update stock.");
+    }
+}
+
+async function promptSetStock(itemId, currentStock) {
+    const item = state.menuItems.find(i => i.id === itemId);
+    const itemName = item ? item.name : "item";
+    const input = prompt(`Enter new exact inventory stock count for "${itemName}":`, currentStock);
+    if (input === null) return;
+
+    const newStock = parseInt(input.trim());
+    if (isNaN(newStock) || newStock < 0) {
+        alert("Please enter a valid non-negative number.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}/adjust-stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ new_stock: newStock })
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            showToastNotification(`📦 Stock updated to ${newStock} for "${itemName}"`);
+            if (state.currentVendorId) {
+                await loadMenu(state.currentVendorId);
+            }
+            renderStockList();
+        } else {
+            alert(json.error || "Failed to update stock.");
+        }
+    } catch (err) {
+        console.error("Set stock error:", err);
+        alert("Network error: Could not set stock.");
+    }
+}
+
+function selectItemEmoji(btnEl, emoji) {
+    const hidden = document.querySelector("#newItemEmoji");
+    if (hidden) hidden.value = emoji;
+
+    document.querySelectorAll(".emoji-opt").forEach(b => b.classList.remove("active"));
+    if (btnEl) btnEl.classList.add("active");
+}
+
+async function handleAddNewItem(event) {
+    event.preventDefault();
+    if (!state.currentVendorId) {
+        alert("Please select an active stall first.");
+        return;
+    }
+
+    const saveBtn = document.querySelector("#saveItemBtn");
+    const nameInput = document.querySelector("#newItemName");
+    const catInput = document.querySelector("#newItemCategory");
+    const priceInput = document.querySelector("#newItemPrice");
+    const costInput = document.querySelector("#newItemCost");
+    const stockInput = document.querySelector("#newItemStock");
+    const lowStockInput = document.querySelector("#newItemLowStock");
+    const descInput = document.querySelector("#newItemDesc");
+    const emojiInput = document.querySelector("#newItemEmoji");
+
+    const payload = {
+        vendor_id: state.currentVendorId,
+        name: nameInput ? nameInput.value.trim() : "",
+        category: catInput ? catInput.value.trim() : "General",
+        price: parseFloat(priceInput ? priceInput.value : 0) || 0,
+        cost: parseFloat(costInput && costInput.value ? costInput.value : 0) || 0,
+        stock_quantity: parseInt(stockInput ? stockInput.value : 50) || 50,
+        low_stock_threshold: parseInt(lowStockInput ? lowStockInput.value : 5) || 5,
+        description: descInput ? descInput.value.trim() : "",
+        image_emoji: emojiInput ? emojiInput.value : "🍲",
+        track_inventory: true
+    };
+
+    if (!payload.name) {
+        alert("Please enter a food item name.");
+        return;
+    }
+
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Adding Item...";
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+            showToastNotification(`✅ "${payload.name}" added to stall menu!`);
+            // Reset form
+            if (nameInput) nameInput.value = "";
+            if (priceInput) priceInput.value = "";
+            if (costInput) costInput.value = "";
+            if (descInput) descInput.value = "";
+            if (stockInput) stockInput.value = "50";
+            if (lowStockInput) lowStockInput.value = "5";
+
+            // Reload menu and switch to list tab
+            await loadMenu(state.currentVendorId);
+            switchStockTab("list");
+        } else {
+            alert(json.error || "Failed to add food item.");
+        }
+    } catch (err) {
+        console.error("Add item error:", err);
+        alert("Network error: Could not add food item.");
+    } finally {
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = "➕ Add Item to Stall";
+        }
+    }
+}
+
+async function deleteStallItem(itemId, itemName) {
+    if (!confirm(`Are you sure you want to remove "${itemName}" from your stall menu?`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/pos/menu/${itemId}`, {
+            method: "DELETE"
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+            showToastNotification(`🗑️ "${itemName}" removed from menu.`);
+            if (state.currentVendorId) {
+                await loadMenu(state.currentVendorId);
+            }
+            renderStockList();
+        } else {
+            alert(json.error || "Failed to delete item.");
+        }
+    } catch (err) {
+        console.error("Delete item error:", err);
+        alert("Network error: Could not delete item.");
+    }
+}
+
+let toastTimer = null;
+function showToastNotification(msg) {
+    const toast = document.querySelector("#toastNotice");
+    if (!toast) return;
+
+    toast.innerHTML = msg;
+    toast.classList.add("show");
+
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2800);
+}
+
+// Window exports for HTML onclick handlers
+window.openStockModal = openStockModal;
+window.closeStockModal = closeStockModal;
+window.switchStockTab = switchStockTab;
+window.onStockSearchChanged = onStockSearchChanged;
+window.quickRestock = quickRestock;
+window.promptSetStock = promptSetStock;
+window.selectItemEmoji = selectItemEmoji;
+window.handleAddNewItem = handleAddNewItem;
+window.deleteStallItem = deleteStallItem;
+window.showToastNotification = showToastNotification;
