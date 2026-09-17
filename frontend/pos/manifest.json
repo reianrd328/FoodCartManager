@@ -1,0 +1,25 @@
+{
+  "name": "FoodCart Stall POS",
+  "short_name": "Stall POS",
+  "description": "Mobile & Tablet Order Taking Point of Sale for Food Carts & Stalls",
+  "start_url": "/pos/",
+  "scope": "/pos/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#c90061",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/pos/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pos/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -12,6 +12,7 @@ from app.routes.settings import settings_bp
 from app.routes.receipts import receipts_bp
 from app.routes.auth import auth_bp
 from app.routes.vendor_portal import vendor_portal_bp
+from app.routes.pos import pos_bp
 
 
 def create_app():
@@ -19,6 +20,7 @@ def create_app():
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
     admin_dir = os.path.join(base_dir, "admin")
     vendor_dir = os.path.join(base_dir, "vendor")
+    pos_dir = os.path.join(base_dir, "pos")
 
     app = Flask(
         __name__,
@@ -37,6 +39,7 @@ def create_app():
     app.register_blueprint(receipts_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(vendor_portal_bp)
+    app.register_blueprint(pos_bp)
 
     @app.route("/")
     def home():
@@ -64,6 +67,15 @@ def create_app():
     @app.route("/vendor/<path:filename>")
     def vendor_static(filename):
         return send_from_directory(vendor_dir, filename)
+
+    @app.route("/pos")
+    @app.route("/pos/")
+    def pos_page():
+        return send_from_directory(pos_dir, "index.html")
+
+    @app.route("/pos/<path:filename>")
+    def pos_static(filename):
+        return send_from_directory(pos_dir, filename)
 
     @app.route("/api/health")
     def health():

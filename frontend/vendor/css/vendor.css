@@ -142,12 +142,21 @@ body {
 .welcome-banner {
     background: linear-gradient(135deg, #df2a78 0%, #c90061 100%);
     border-radius: 20px;
-    padding: 32px 36px;
+    padding: 28px 32px;
     color: #ffffff;
     margin-bottom: 28px;
     box-shadow: 0 14px 34px rgba(201, 0, 97, 0.18);
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.welcome-content {
+    max-width: 580px;
 }
 
 .welcome-banner h1 {
@@ -158,9 +167,29 @@ body {
 
 .welcome-banner p {
     font-size: 14px;
-    opacity: 0.9;
-    max-width: 600px;
+    opacity: 0.92;
     line-height: 1.5;
+}
+
+.pos-launch-btn {
+    background: #ffffff;
+    color: var(--primary);
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+}
+
+.pos-launch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22);
 }
 
 /* KPI CARDS */

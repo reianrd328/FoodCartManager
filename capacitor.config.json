@@ -1,0 +1,15 @@
+{
+  "appId": "com.foodcart.stallpos",
+  "appName": "FoodCart Stall POS",
+  "webDir": "frontend/pos",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://foodcartmanager.onrender.com/pos/",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  }
+}
